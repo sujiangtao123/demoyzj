@@ -41,11 +41,12 @@ public class ArraySort {
         TreeNode root4 = new TreeNode(4);
         TreeNode root5 = new TreeNode(3);
         root2.left = root1;
-//        root2.right = root3;
-        root2.left.left = root3;
+        root2.right = root4;
+//        root2.left.left = root3;
 //        root3.right = root4;
 //        root4.left = root5;
-        System.out.println(isBalanced(root2));
+//        System.out.println(isBalanced(root2));
+        System.out.println(hasPathSum(root2, 6));
     }
 
 
@@ -213,6 +214,32 @@ public class ArraySort {
             level++;
         }
         return level;
+    }
+
+    public static boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return false;
+        }
+        Queue<TreeNode> treeNodes = new LinkedList<>();
+        treeNodes.offer(root);
+        while (!treeNodes.isEmpty()) {
+            TreeNode poll = treeNodes.poll();
+            if (poll.left == null && poll.right == null) {
+                if (poll.val == sum) {
+                    return true;
+                }
+                continue;
+            }
+            if (poll.left != null) {
+                treeNodes.offer(poll.left);
+                poll.left.val = poll.val + poll.left.val;
+            }
+            if (poll.right != null) {
+                treeNodes.offer(poll.right);
+                poll.right.val = poll.val + poll.right.val;
+            }
+        }
+        return false;
     }
 
     public static TreeNode sortedArrayToBST(int[] nums) {
