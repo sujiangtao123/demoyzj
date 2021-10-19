@@ -3,6 +3,7 @@ package com.company.lt;
 import com.company.model.User;
 import org.junit.Test;
 
+import java.net.NetworkInterface;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -44,9 +45,21 @@ public class ArraySort {
         root2.right = root4;
 //        root2.left.left = root3;
 //        root3.right = root4;
-//        root4.left = root5;
+        root4.left = root5;
 //        System.out.println(isBalanced(root2));
-        System.out.println(hasPathSum(root2, 6));
+//        System.out.println(hasPathSum(root2, 6));
+//        System.out.println(generate(5));
+//        System.out.println(getRow(3));
+//        System.out.println(maxProfit(new int[]{10, 5, 20, 1, 4}));
+//        System.out.println(isPalindrome("A man, a plan, a canal: Panama"));
+//        System.out.println(singleNumber(new int[]{4, 1, 2, 1, 2}));
+//        System.out.println(preorderTraversal(root2));
+//        System.out.println(postorderTraversal(root2));
+        Deque<Integer> stack = new LinkedList<>();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        System.out.println(stack);
     }
 
 
@@ -216,6 +229,7 @@ public class ArraySort {
         return level;
     }
 
+    //二叉树路径之和
     public static boolean hasPathSum(TreeNode root, int sum) {
         if (root == null) {
             return false;
@@ -240,6 +254,178 @@ public class ArraySort {
             }
         }
         return false;
+    }
+
+    //杨辉三角
+    public static List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> list = new ArrayList<>();
+        for (int i = 1; i <= numRows; i++) {
+            List<Integer> ros = new ArrayList<>();
+            for (int j = 0; j <= i - 1; j++) {
+                //如果是每行的头和尾,直接为1
+                if (j == 0 || j == i - 1) {
+                    ros.add(1);
+                } else {
+                    ros.add(list.get(i - 2).get(j - 1) + list.get(i - 2).get(j));
+                }
+            }
+            list.add(ros);
+        }
+        return list;
+    }
+
+    //杨辉三角II 给定一个非负索引rowIndex,返回rowIndex行
+    public static List<Integer> getRow(int rowIndex) {
+        List<Integer> pre = new ArrayList<>();
+        for (int i = 0; i <= rowIndex; i++) {
+            List<Integer> cur = new ArrayList<>();
+            for (int j = 0; j <= i; j++) {
+                //如果是每行的头和尾,直接为1
+                if (j == 0 || j == i) {
+                    cur.add(1);
+                } else {
+                    cur.add(pre.get(j - 1) + pre.get(j));
+                }
+            }
+            pre = cur;
+        }
+        return pre;
+    }
+
+    //股票最佳时机算法 lc 121题
+    public static int maxProfit(int[] prices) {
+        int difference = 0;
+        int maxPrice = Integer.MAX_VALUE;
+        if (prices.length == 0) {
+            return 0;
+        }
+//        for (int i = 0; i < prices.length; i++) {
+//            for (int j = i + 1; j < prices.length; j++) {
+//                if (prices[j] - prices[i] > difference) {
+//                    difference = prices[j] - prices[i];
+//                }
+//            }
+//        }
+        for (int i = 0; i < prices.length; i++) {
+            if (prices[i] < maxPrice) {
+                maxPrice = prices[i];
+            } else if (prices[i] - maxPrice > difference) {
+                difference = prices[i] - maxPrice;
+            }
+        }
+        return difference;
+    }
+
+    // 验证回文串 lc 125题
+    public static boolean isPalindrome(String s) {
+        if (s.isEmpty()) {
+            return true;
+        }
+        int left = 0, right = s.length() - 1;
+        while (left < right) {
+            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+            String s1 = String.valueOf(s.charAt(left));
+            String s2 = String.valueOf(s.charAt(right));
+            boolean b = String.valueOf(s1).equalsIgnoreCase(s2);
+            if (!b) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    //找出只出现一次的数字 lc 136
+    public static int singleNumber(int[] nums) {
+//        HashMap<Integer, Integer> map = new HashMap<>();
+//        for (int i = 0; i < nums.length; i++) {
+//            if (!map.containsKey(nums[i])) {
+//                map.putIfAbsent(nums[i], 1);
+//            } else {
+//                int m = map.get(nums[i]);
+//                map.put(nums[i], ++m);
+//            }
+//        }
+//       return map.entrySet().stream().filter(entry->entry.getValue() == 1)
+//               .map(Map.Entry::getKey).collect(Collectors.toList()).get(0);
+        //进阶版
+        int single = 0;
+        for (int num : nums) {
+            single ^= num;
+        }
+        return single;
+    }
+
+    //判断链表中是否有环
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 前序遍历二叉树 lc 144题
+    public static List<Integer> preorderTraversal(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        return preOrder(root, list);
+    }
+
+    public static List<Integer> preOrder(TreeNode root, List<Integer> list) {
+        list.add(root.val);
+        if (root.left != null) {
+            preOrder(root.left, list);
+        }
+        if (root.right != null) {
+            preOrder(root.right, list);
+        }
+        return list;
+    }
+
+    // 二叉树后续遍历 lc 145题
+    public static List<Integer> postorderTraversal(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        return postOrder(root, list);
+    }
+
+    public static List<Integer> postOrder(TreeNode root, List<Integer> list) {
+        if (root.left != null) {
+            postOrder(root.left, list);
+        }
+        if (root.right != null) {
+            postOrder(root.right, list);
+        }
+        list.add(root.val);
+        return list;
+    }
+
+    // 相交链表算法 lc 160题目
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        ListNode pa = headA, pb = headB;
+        while (pa != pb) {
+            pa = pa != null ? pa.next : pb;
+            pb = pb != null ? pb.next : pa;
+        }
+        return pa;
     }
 
     public static TreeNode sortedArrayToBST(int[] nums) {
@@ -323,5 +509,35 @@ class TreeNode {
                 ", left=" + left +
                 ", right=" + right +
                 '}';
+    }
+}
+
+// 最小栈 lc 155题目
+class MinStack {
+    //数组里是[当前值,最小值]
+    private Stack<int[]> stack = new Stack<>();
+
+    public MinStack() {
+
+    }
+
+    public void push(int val) {
+        if (stack.isEmpty()) {
+            stack.push(new int[]{val, val});
+        } else {
+            stack.push(new int[]{val, Math.min(val, stack.peek()[1])});
+        }
+    }
+
+    public void pop() {
+        stack.pop();
+    }
+
+    public int top() {
+        return stack.peek()[0];
+    }
+
+    public int getMin() {
+        return stack.peek()[1];
     }
 }
