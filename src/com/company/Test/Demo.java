@@ -36,6 +36,7 @@ private static int v = 5;
         }
 //        System.out.println(decode);
         List<Integer> list = Collections.synchronizedList(new ArrayList(0));
+        Collections.addAll(list, 1, 2, 3);
         List<Integer> list2 = Collections.synchronizedList(new ArrayList(0));
         List<LocalDateTime> list3 = Collections.synchronizedList(new ArrayList(0));
         Collections.addAll(list3, LocalDateTime.now());
@@ -69,7 +70,7 @@ private static int v = 5;
 //        list.stream().map(Integer::longValue).collect(Collectors.joining("/","/",""))
 //        System.out.println(LocalDateTime.ofEpochSecond(1608782350L, 0,
 //                ZoneOffset.ofHours(8)).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        Integer count2 = list.stream().reduce(2, (x, y) -> (x - y));
+        Integer count2 = list.stream().reduce(2, (x, y) -> (x + y));
         System.out.println(count2);
 
         ArrayList<Integer> arrayList = new ArrayList<>();

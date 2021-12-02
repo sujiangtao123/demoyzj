@@ -8,11 +8,11 @@ public class FinalTest {
     @Test
     public void method() {
         System.out.println(Son.num);
-        try {
-            Class<?> aClass = ClassLoader.getSystemClassLoader().loadClass("com.atguigu.chapter10.java3.father");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Class<?> aClass = ClassLoader.getSystemClassLoader().loadClass("com.atguigu.chapter10.java3.father");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
 
 

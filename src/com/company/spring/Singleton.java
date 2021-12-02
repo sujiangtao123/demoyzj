@@ -32,5 +32,7 @@ public class Singleton {
         System.out.println(LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli() / 1000);
 
         System.out.println(df.format(LocalDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneId.of("Asia/Shanghai"))));
+        System.out.println(Singleton.getInstance());
+        System.out.println(Singleton.getInstance());
     }
 }

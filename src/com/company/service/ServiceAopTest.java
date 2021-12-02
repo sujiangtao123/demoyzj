@@ -10,11 +10,8 @@ public class ServiceAopTest {
     public static void main(String[] args) {
 
         UserService userService = new UserServiceImpl();
-        InvocationHandler userProxy = new UserProxy(userService);
-//        UserService service = (UserService)Proxy.newProxyInstance(userService.getClass().getClassLoader()
-//                , userService.getClass().getInterfaces(), userProxy);
-        UserService service = (UserService)Proxy.newProxyInstance(userProxy.getClass().getClassLoader()
-                , userService.getClass().getInterfaces(), userProxy);
+        UserProxy userProxy = new UserProxy(userService);
+        UserService service = (UserService) userProxy.getProxy();
         System.out.println(service.getName("苏江涛"));
 
     }

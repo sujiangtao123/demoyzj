@@ -15,25 +15,40 @@ import java.util.stream.Collectors;
 public class ArraySort {
     public static void main(String[] args) {
         ListNode head1 = new ListNode(1);
-        ListNode head2 = new ListNode(1);
-        ListNode head3 = new ListNode(1);
-        ListNode head4 = new ListNode(2);
-        ListNode head5 = new ListNode(3);
-        ListNode head6 = new ListNode(3);
+        ListNode head2 = new ListNode(2);
+//        ListNode head3 = new ListNode(6);
+        ListNode head4 = new ListNode(3);
+        ListNode head5 = new ListNode(4);
+        ListNode head6 = new ListNode(5);
+        ListNode head7 = new ListNode(6);
+        ListNode head8 = new ListNode(2);
+        ListNode head9 = new ListNode(1);
         head1.next = head2;
-        head2.next = head3;
-        head3.next = head4;
-        head4.next = head5;
-        head5.next = head6;
+        head2.next = head8;
+        head8.next = head9;
+//        head2.next = head3;
+//        head3.next = head4;
+//        head2.next = head4;
+//        head4.next = head5;
+//        head5.next = head6;
+//        head6.next = head7;
 //        System.out.println(head1);
 //        System.out.println(deleteDuplicates(head1));
-        TreeNode root = new TreeNode(1);
+        TreeNode root = new TreeNode(4);
         TreeNode treeNode = new TreeNode(2);
-        TreeNode treeNode1 = new TreeNode(3);
-        root.left = null;
-        root.right = treeNode;
-        treeNode.left = treeNode1;
-        treeNode.right = null;
+        TreeNode treeNode1 = new TreeNode(7);
+        TreeNode treeNode2 = new TreeNode(1);
+        TreeNode treeNode3 = new TreeNode(3);
+        TreeNode treeNode4 = new TreeNode(6);
+        TreeNode treeNode5 = new TreeNode(9);
+        root.left = treeNode;
+        root.right = treeNode1;
+//        treeNode.left = treeNode2;
+//        treeNode.right = treeNode3;
+        treeNode1.left = treeNode4;
+//        treeNode1.right = treeNode5;
+//        treeNode.left = treeNode1;
+//        treeNode.right = null;
 //        System.out.println(isSameTree(root, root));
 //        System.out.println(sortedArrayToBST(new int[]{1, 2, 3, 4, 5}).toString());
         TreeNode root1 = new TreeNode(1);
@@ -45,7 +60,7 @@ public class ArraySort {
         root2.right = root4;
 //        root2.left.left = root3;
 //        root3.right = root4;
-        root4.left = root5;
+//        root4.left = root5;
 //        System.out.println(isBalanced(root2));
 //        System.out.println(hasPathSum(root2, 6));
 //        System.out.println(generate(5));
@@ -55,11 +70,15 @@ public class ArraySort {
 //        System.out.println(singleNumber(new int[]{4, 1, 2, 1, 2}));
 //        System.out.println(preorderTraversal(root2));
 //        System.out.println(postorderTraversal(root2));
-        Deque<Integer> stack = new LinkedList<>();
-        stack.push(1);
-        stack.push(2);
-        stack.push(3);
-        System.out.println(stack);
+//        System.out.println(Arrays.toString(twoSum(new int[]{2, 7, 11, 15}, 9)));
+//        System.out.println(convertToTitle(701));
+//        System.out.println(majorityElement(new int[]{2, 2, 1, 1, 1, 2, 2}));
+//        System.out.println(titleToNumber("FXSHRXW"));
+//        System.out.println(reverseBits(8));
+//        System.out.println(removeElements(head1, 6));
+//        System.out.println(reverseList(head1));
+//        System.out.println(invertTree(root));
+        System.out.println(isPalindrome(head1));
     }
 
 
@@ -331,7 +350,7 @@ public class ArraySort {
             }
             String s1 = String.valueOf(s.charAt(left));
             String s2 = String.valueOf(s.charAt(right));
-            boolean b = String.valueOf(s1).equalsIgnoreCase(s2);
+            boolean b = s1.equalsIgnoreCase(s2);
             if (!b) {
                 return false;
             }
@@ -428,6 +447,100 @@ public class ArraySort {
         return pa;
     }
 
+    //两数之和II -输入有序数组
+    public static int[] twoSum(int[] numbers, int target) {
+//        HashMap<Integer, Integer> map = new HashMap<>();
+//        for (int i = 0; i < numbers.length; i++) {
+//            int temp = target - numbers[i];
+//            if (map.containsKey(temp)) {
+//                return new int[]{map.get(temp), i + 1};
+//            } else {
+//                map.putIfAbsent(numbers[i], i + 1);
+//            }
+//        }
+//        return new int[]{};
+        //双指针
+        int low = 0, high = numbers.length - 1;
+        while (low < high) {
+            int sum = numbers[low] + numbers[high];
+            if (sum == target) {
+                return new int[]{low + 1, high + 1};
+            } else if (sum < target) {
+                ++low;
+            } else {
+                --high;
+            }
+        }
+        return new int[]{};
+    }
+
+    // excel表列名称 lc 168题
+    public static String convertToTitle(int columnNumber) {
+        StringBuilder append = new StringBuilder();
+        while (columnNumber != 0) {
+            columnNumber--;
+            int m = columnNumber % 26;
+            append.append((char) (m + 'A'));
+            columnNumber = columnNumber / 26;
+        }
+        return append.reverse().toString();
+    }
+
+    // excel表列序号 lc 171题
+    public static int titleToNumber(String columnTitle) {
+        int length = columnTitle.length();
+        int sum = 0;
+        for (int i = 0; i < length; i++) {
+            char c = columnTitle.charAt(i);
+            int m = c - 64;
+            sum += m * Math.pow(26, length - 1 - i);
+        }
+        return sum;
+    }
+
+    // 多数元素 lc 169题
+    public static int majorityElement(int[] nums) {
+        int count = 0;
+        Integer candidate = null;
+
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
+            }
+            count += (num == candidate) ? 1 : -1;
+        }
+
+        return candidate;
+    }
+
+    // 颠倒二进制位
+    public static int reverseBits(int n) {
+        int res = 0;
+        for (int i = 0; i < 32; ++i) {
+            res = res << 1;
+            //获取n的末尾元素
+            int last = n & 1;
+            // 将res的末尾设置成n的末尾拼接
+            res = res | last;
+            //每次使用最新的n的末尾元素
+            n >>= 1;
+        }
+        return res;
+    }
+
+    //位1的个数 lc 191题
+    public static int hammingWeight(int n) {
+        int count = 0;
+        for (int i = 0; i < 32; ++i) {
+            int last = n & 1;
+            if (last == 1) {
+                ++count;
+            }
+            n >>= 1;
+        }
+        return count;
+    }
+
     public static TreeNode sortedArrayToBST(int[] nums) {
         return helper(nums, 0, nums.length - 1);
     }
@@ -461,6 +574,98 @@ public class ArraySort {
         } else {
             return Math.max(leftHeight, rightHeight) + 1;
         }
+    }
+
+    // lc 203题目 移除链表元素
+    public static ListNode removeElements(ListNode head, int val) {
+        if (null == head) {
+            return null;
+        }
+        // 因为head头结点可能被删除
+        ListNode dump = new ListNode(0);
+        dump.next = head;
+        ListNode node = dump;
+        while (node.next != null) {
+            if (node.next.val == val) {
+                node.next = node.next.next;
+            } else {
+                node = node.next;
+            }
+        }
+        return dump.next;
+    }
+
+    // lc 206 题目 反转链表
+    public static ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode reverseNode = new ListNode(-1);
+        ListNode cur = head;
+        ListNode next = null;
+        while (cur != null) {
+            next = cur.next;
+            cur.next = reverseNode.next;
+            reverseNode.next = cur;
+            cur = next;
+        }
+        return reverseNode.next;
+    }
+
+    // lc 226题目 翻转二叉树
+    public static TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+        root.left = right;
+        root.right = left;
+        return root;
+    }
+
+    // lc 234. 回文链表
+    public static boolean isPalindrome(ListNode head) {
+//        ListNode first = head;
+//        ArrayList<Integer> list = new ArrayList<>();
+//        while (first != null) {
+//            list.add(first.val);
+//            first = first.next;
+//        }
+//        int m = 0, n = list.size() - 1;
+//        while (m <= n) {
+//            if (list.get(m) == list.get(n)) {
+//                m++;
+//                n--;
+//            } else {
+//                return false;
+//            }
+//        }
+//        return true;
+        //方案二,找到中间节点,翻转中左链表进行比较,快指针是慢指针的2倍
+        ListNode fast = head, slow = fast;
+        //即将进行翻转的链表
+        ListNode cur = head, leftNode = new ListNode(-1);
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            // 开始进行反转,头插法
+            cur.next = leftNode.next;
+            leftNode.next = cur;
+            cur = slow;
+        }
+        // 如果f不是null的话,说明是奇数节点,跳出
+        if (fast != null) slow = slow.next;
+        //进行左右比较
+        ListNode leftHeadAfter = leftNode.next;
+        while (slow != null && leftHeadAfter != null) {
+            if (slow.val != leftHeadAfter.val) {
+                return false;
+            }
+            slow = slow.next;
+            leftHeadAfter = leftHeadAfter.next;
+        }
+        return true;
     }
 
 }
@@ -539,5 +744,88 @@ class MinStack {
 
     public int getMin() {
         return stack.peek()[1];
+    }
+}
+
+// lc 232. 用栈实现队列
+class MyQueue {
+    private Stack<Integer> stack;
+    private Stack<Integer> stackNew;
+
+    public MyQueue() {
+        stack = new Stack<>();
+        stackNew = new Stack<>();
+    }
+
+    public static void main(String[] args) {
+        MyQueue myQueue = new MyQueue();
+        myQueue.push(1);
+        myQueue.push(2);
+        System.out.println(myQueue.peek());
+        System.out.println(myQueue.pop());
+        System.out.println(myQueue.empty());
+    }
+
+    public void push(int x) {
+        stack.push(x);
+    }
+
+    public int pop() {
+        if (stackNew.isEmpty()) {
+            while (!stack.isEmpty()) {
+                stackNew.push(stack.pop());
+            }
+        }
+        return stackNew.pop();
+    }
+
+    public int peek() {
+        if (stackNew.isEmpty()) {
+            while (!stack.isEmpty()) {
+                stackNew.push(stack.pop());
+            }
+        }
+        return stackNew.peek();
+    }
+
+    public boolean empty() {
+        return stackNew.isEmpty();
+    }
+
+}
+
+// lc 225. 用队列实现栈
+class MyStack {
+    Deque<Integer> queue;
+
+    public MyStack() {
+        queue = new LinkedList<>();
+    }
+
+    public static void main(String[] args) {
+        MyStack myStack = new MyStack();
+        myStack.push(1);
+        myStack.push(2);
+        myStack.push(3);
+    }
+
+    public void push(int x) {
+        int size = queue.size();
+        queue.offer(x);
+        for (int i = 0; i < size; i++) {
+            queue.offer(queue.poll());
+        }
+    }
+
+    public int pop() {
+        return queue.poll();
+    }
+
+    public int top() {
+        return queue.peek();
+    }
+
+    public boolean empty() {
+        return queue.isEmpty();
     }
 }

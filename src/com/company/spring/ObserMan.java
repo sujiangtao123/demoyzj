@@ -2,6 +2,7 @@ package com.company.spring;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 观察者模式发布-订阅模式
